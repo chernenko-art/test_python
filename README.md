@@ -1,2 +1,2 @@
-# test_python
+# Repository for Python Traning
 Course "Python for QA Engenier"
