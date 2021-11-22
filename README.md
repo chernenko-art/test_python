@@ -1,2 +1,2 @@
 # test_python
-Course "Python for QA"
+Course "Python for QA Engenier"
