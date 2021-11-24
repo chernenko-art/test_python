@@ -14,14 +14,12 @@ class TestCreateUser():
         self.driver.quit()
 
     def test_CreateUser(self):
-        self.open_home_page()
-        self.login(username="admin", password="secret")
-        self.open_users_page()
         send_test_user_params = User(firstname="Eva", middlename="Semenova", lastname="Cocs", nickname="Coca", title="Nocomments",
                                      company="Google", address="Russia", home="Moscow", mobile="169421+", work="Google",
                                      fax="14481561", email="eva@mail.ru", email2="no", email3="no", homepage="no",
                                      phone2="+89945669", bday=12, bmounth="'October'", byear="1991", aday="'25'",
                                      amonth="'November'", ayear="2015", address2="Rome", notes="No")
+        self.login(username="admin", password="secret")
         self.create_user(send_test_user_params)
         self.logout()
         self.close_home_page()
@@ -33,6 +31,7 @@ class TestCreateUser():
         self.driver.find_element(By.LINK_TEXT, "Logout").click()
 
     def create_user(self, user):
+        self.open_users_page()
         self.driver.find_element(By.NAME, "firstname").click()
         self.driver.find_element(By.NAME, "firstname").send_keys(user.firstname)
         self.driver.find_element(By.NAME, "middlename").click()
@@ -99,6 +98,7 @@ class TestCreateUser():
         self.driver.find_element(By.LINK_TEXT, "add new").click()
 
     def login(self, username, password):
+        self.open_home_page()
         self.driver.find_element(By.NAME, "user").click()
         self.driver.find_element(By.NAME, "user").send_keys(username)
         self.driver.find_element(By.ID, "LoginForm").click()
