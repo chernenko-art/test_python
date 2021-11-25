@@ -9,6 +9,9 @@ class UserHelper:
     def open_users_page(self):
         self.app.driver.find_element(By.LINK_TEXT, "add new").click()
 
+    def return_to_user_page(self):
+        self.app.driver.find_element(By.LINK_TEXT, "add new").click()
+
     def create(self, user):
         self.open_users_page()
         self.app.driver.find_element(By.NAME, "firstname").click()
@@ -72,3 +75,4 @@ class UserHelper:
         self.app.driver.find_element(By.NAME, "notes").send_keys(user.notes)
         self.app.driver.find_element(By.NAME, "theform").click()
         self.app.driver.find_element(By.CSS_SELECTOR, "input:nth-child(87)").click()
+        self.return_to_user_page()
