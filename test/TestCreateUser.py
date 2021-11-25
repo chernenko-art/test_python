@@ -19,7 +19,7 @@ def test_CreateUser(app):
         aday="'25'", amonth="'November'", ayear="2015", address2="Rome", notes="No"
     )
     app.session.login(username="admin", password="secret")
-    app.create_user(send_test_user_params)
+    app.user.create(send_test_user_params)
     app.session.logout()
 
 
