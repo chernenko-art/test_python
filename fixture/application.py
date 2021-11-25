@@ -6,13 +6,11 @@ class Application:
     """Test class for initializing and drop object"""
 
     def __init__(self):
-        self.wd = webdriver.Firefox()
         self.driver = webdriver.Firefox()
-        self.wd.implicitly_wait(30)
         self.vars = {}
 
     def destroy(self):
-        self.wd.quit()
+        self.driver.quit()
 
     def open_home_page(self):
         self.driver.get("http://localhost/addressbook/")
@@ -35,33 +33,30 @@ class Application:
         self.driver.find_element(By.LINK_TEXT, "Logout").click()
 
     def open_groups_page(self):
-        wd = self.wd
-        wd.find_element_by_link_text("groups").click()
+        self.driver.find_element(By.LINK_TEXT, "groups").click()
 
     def open_users_page(self):
         self.driver.find_element(By.LINK_TEXT, "add new").click()
 
     def return_to_group_page(self):
-        wd = self.wd
-        wd.find_element_by_link_text("groups").click()
+        self.driver.find_element(By.LINK_TEXT, "groups").click()
 
     def create_group(self, group):
-        wd = self.wd
         self.open_groups_page()
         # init group creation
-        wd.find_element_by_name("new").click()
+        self.driver.find_element(By.NAME, "new").click()
         # fill group form
-        wd.find_element_by_name("group_name").click()
-        wd.find_element_by_name("group_name").clear()
-        wd.find_element_by_name("group_name").send_keys(group.name)
-        wd.find_element_by_name("group_header").click()
-        wd.find_element_by_name("group_header").clear()
-        wd.find_element_by_name("group_header").send_keys(group.header)
-        wd.find_element_by_name("group_footer").click()
-        wd.find_element_by_name("group_footer").clear()
-        wd.find_element_by_name("group_footer").send_keys(group.footer)
+        self.driver.find_element(By.NAME, "group_name").click()
+        self.driver.find_element(By.NAME, "group_name").clear()
+        self.driver.find_element(By.NAME, "group_name").send_keys(group.name)
+        self.driver.find_element(By.NAME, "group_header").click()
+        self.driver.find_element(By.NAME, "group_header").clear()
+        self.driver.find_element(By.NAME, "group_header").send_keys(group.header)
+        self.driver.find_element(By.NAME, "group_footer").click()
+        self.driver.find_element(By.NAME, "group_footer").clear()
+        self.driver.find_element(By.NAME, "group_footer").send_keys(group.footer)
         # submit created group
-        wd.find_element_by_name("submit").click()
+        self.driver.find_element(By.NAME, "submit").click()
         self.return_to_group_page()
 
     def create_user(self, user):
