@@ -2,7 +2,7 @@
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from user import User
+from model.user import User
 
 
 class TestCreateUser():
