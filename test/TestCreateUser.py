@@ -21,7 +21,6 @@ def test_CreateUser(app):
     app.session.login(username="admin", password="secret")
     app.create_user(send_test_user_params)
     app.session.logout()
-    app.close_home_page()
 
 
 
