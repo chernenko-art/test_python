@@ -18,4 +18,4 @@ class SessionHelper:
 
     def logout(self):
         self.app.driver.find_element(By.LINK_TEXT, "Logout").click()
-        self.app.navigation.close_home_page()
+        # self.app.navigation.close_home_page()
