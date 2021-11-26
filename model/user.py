@@ -27,6 +27,3 @@ class User:
         self.ayear = ayear
         self.address2 = address2
         self.notes = notes
-
-
-
