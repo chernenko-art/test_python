@@ -16,6 +16,12 @@ class SessionHelper:
         self.app.driver.find_element(By.ID, "LoginForm").click()
         self.app.driver.find_element(By.CSS_SELECTOR, "input:nth-child(7)").click()
 
+    def ensure_login(self, username, password):
+        # check logout element
+        logout_element = len(self.app.driver.find_elements(By.LINK_TEXT, "Logout"))
+        if logout_element > 0:
+            self.logout()
+        self.login(username, password)
+
     def logout(self):
         self.app.driver.find_element(By.LINK_TEXT, "Logout").click()
-        # self.app.navigation.close_home_page()

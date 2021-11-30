@@ -9,8 +9,8 @@ class GroupHelper:
     def open_groups_page(self):
         self.app.driver.find_element(By.LINK_TEXT, "groups").click()
 
-    def return_to_group_page(self):
-        self.app.driver.find_element(By.LINK_TEXT, "groups").click()
+    def return_to_home_page(self):
+        self.app.driver.find_element(By.LINK_TEXT, "home").click()
 
     def create(self, group):
         self.open_groups_page()
@@ -19,7 +19,7 @@ class GroupHelper:
         self.fill_group_form(group)
         # submit created group
         self.app.driver.find_element(By.NAME, "submit").click()
-        self.return_to_group_page()
+        self.return_to_home_page()
 
     def fill_group_form(self, group):
         self.change_field_value("group_name", group.name)
@@ -36,7 +36,7 @@ class GroupHelper:
         self.open_groups_page()
         self.select_first_group()
         self.app.driver.find_element(By.NAME, "delete").click()
-        self.return_to_group_page()
+        self.return_to_home_page()
 
     def modify_first_group(self, new_group_data):
         self.open_groups_page()
@@ -46,7 +46,7 @@ class GroupHelper:
         self.fill_group_form(new_group_data)
         # submit modification
         self.app.driver.find_element(By.NAME, "update").click()
-        self.return_to_group_page()
+        self.return_to_home_page()
 
     def select_first_group(self):
         self.app.driver.find_element(By.NAME, "selected[]").click()

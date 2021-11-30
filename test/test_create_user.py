@@ -9,16 +9,4 @@ def test_create_user(app):
         email2="no", email3="no", homepage="no", phone2="+89945669", bday=12, bmonth="'October'", byear="1991",
         aday="'25'", amonth="'November'", ayear="2015", address2="Rome", notes="No"
     )
-    app.session.login(username="admin", password="secret")
     app.user.create(test_user_params)
-    app.session.logout()
-
-
-
-
-
-
-
-
-
-
