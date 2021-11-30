@@ -1,8 +1,10 @@
 class User:
 
-    def __init__(self, firstname, middlename, lastname, nickname, title, company, address, home, mobile, work, fax,
-                    email, email2, email3, homepage, phone2, bday, bmounth, byear, aday, amonth, ayear, address2,
-                    notes):
+    def __init__(self,
+            firstname=None, middlename=None, lastname=None, nickname=None, title=None, company=None, address=None,
+            home=None, mobile=None, work=None, fax=None, email=None, email2=None, email3=None, homepage=None,
+            phone2=None, bday=None, bmonth=None, byear=None, aday=None, amonth=None, ayear=None, address2=None,
+            notes=None):
         self.firstname = firstname
         self.middlename = middlename
         self.lastname = lastname
@@ -20,7 +22,7 @@ class User:
         self.homepage = homepage
         self.phone2 = phone2
         self.bday = bday
-        self.bmounth = bmounth
+        self.bmonth = bmonth
         self.byear = byear
         self.aday = aday
         self.amonth = amonth
