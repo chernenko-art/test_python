@@ -75,3 +75,7 @@ class UserHelper:
         self.app.driver.find_element(By.NAME, "update").click()
         self.return_to_home_page()
 
+    def count(self):
+        self.return_to_home_page()
+        return len(self.app.driver.find_elements(By.NAME, "selected[]"))
+

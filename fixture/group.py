@@ -50,3 +50,7 @@ class GroupHelper:
 
     def select_first_group(self):
         self.app.driver.find_element(By.NAME, "selected[]").click()
+
+    def count(self):
+        self.open_groups_page()
+        return len(self.app.driver.find_elements(By.NAME, "selected[]"))
