@@ -17,11 +17,18 @@ class SessionHelper:
         self.app.driver.find_element(By.CSS_SELECTOR, "input:nth-child(7)").click()
 
     def ensure_login(self, username, password):
-        # check logout element
-        logout_element = len(self.app.driver.find_elements(By.LINK_TEXT, "Logout"))
-        if logout_element > 0:
-            self.logout()
+        if self.is_loggined() > 0:
+            if self.check_loggined_name() != username:
+                self.logout()
+            else:
+                return
         self.login(username, password)
+
+    def check_loggined_name(self):
+        return self.app.driver.find_element(By.XPATH, "//*[@id='top']/form/b").text[1:-1]
+
+    def is_loggined(self):
+        return len(self.app.driver.find_elements(By.LINK_TEXT, "Logout"))
 
     def logout(self):
         self.app.driver.find_element(By.LINK_TEXT, "Logout").click()
