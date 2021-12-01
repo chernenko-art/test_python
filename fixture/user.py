@@ -9,15 +9,12 @@ class UserHelper:
     def add_new_user(self):
         self.app.driver.find_element(By.LINK_TEXT, "add new").click()
 
-    def return_to_home_page(self):
-        self.app.driver.find_element(By.LINK_TEXT, "home").click()
-
     def create(self, user):
         self.add_new_user()
         self.fill_user_form(user)
         # save changes
         self.app.driver.find_element(By.XPATH, "(//input[@name=\'submit\'])[2]").click()
-        self.return_to_home_page()
+        self.app.navigation.return_to_home_page()
 
 
     def change_field_value(self, field_name, text):
@@ -65,7 +62,7 @@ class UserHelper:
         self.app.driver.find_element(By.XPATH, "//input[@value='Delete']").click()
         # confirm changes
         self.app.driver.switch_to.alert.accept()
-        self.return_to_home_page()
+        self.app.navigation.return_to_home_page()
 
     def modify(self, user):
         # open modify form for first user
@@ -73,9 +70,8 @@ class UserHelper:
         self.fill_user_form(user)
         # save changes
         self.app.driver.find_element(By.NAME, "update").click()
-        self.return_to_home_page()
+        self.app.navigation.return_to_home_page()
 
     def count(self):
-        self.return_to_home_page()
+        self.app.navigation.return_to_home_page()
         return len(self.app.driver.find_elements(By.NAME, "selected[]"))
-
