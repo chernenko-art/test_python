@@ -52,9 +52,10 @@ class GroupHelper:
 
     def get_group_list(self):
         self.app.navigation.open_groups_page()
-        groups = []
-        for element in self.app.driver.find_elements(By.CSS_SELECTOR, "span.group"):
+        groups_list = []
+        find_group_list = self.app.driver.find_elements(By.CSS_SELECTOR, "span.group")
+        for element in find_group_list:
             text = element.text
             id = element.find_element(By.NAME, "selected[]").get_attribute("value")
-            groups.append(Group(name=text, id=id))
-        return groups
+            groups_list.append(Group(name=text, id=id))
+        return groups_list
