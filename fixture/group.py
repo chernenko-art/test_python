@@ -15,6 +15,7 @@ class GroupHelper:
         # submit created group
         self.app.driver.find_element(By.NAME, "submit").click()
         self.app.navigation.open_home_page()
+        self.group_cache = None
 
     def fill_group_form(self, group):
         self.change_field_value("group_name", group.name)
@@ -32,6 +33,7 @@ class GroupHelper:
         self.select_first_group()
         self.app.driver.find_element(By.NAME, "delete").click()
         self.app.navigation.open_home_page()
+        self.group_cache = None
 
     def modify_first_group(self, new_group_data):
         self.app.navigation.open_groups_page()
@@ -42,6 +44,7 @@ class GroupHelper:
         # submit modification
         self.app.driver.find_element(By.NAME, "update").click()
         self.app.navigation.open_home_page()
+        self.group_cache = None
 
     def select_first_group(self):
         self.app.driver.find_element(By.NAME, "selected[]").click()
@@ -50,12 +53,16 @@ class GroupHelper:
         self.app.navigation.open_groups_page()
         return len(self.app.driver.find_elements(By.NAME, "selected[]"))
 
+    group_cache = None
+
     def get_group_list(self):
-        self.app.navigation.open_groups_page()
-        groups_list = []
-        find_group_list = self.app.driver.find_elements(By.CSS_SELECTOR, "span.group")
-        for element in find_group_list:
-            text = element.text
-            id = element.find_element(By.NAME, "selected[]").get_attribute("value")
-            groups_list.append(Group(name=text, id=id))
-        return groups_list
+        if self.group_cache is None:
+            self.app.navigation.open_groups_page()
+            self.group_cache = []
+            find_group_list = self.app.driver.find_elements(By.CSS_SELECTOR, "span.group")
+            for element in find_group_list:
+                text = element.text
+                id = element.find_element(By.NAME, "selected[]").get_attribute("value")
+                self.group_cache.append(Group(name=text, id=id))
+        # return copy group_cache
+        return list(self.group_cache)

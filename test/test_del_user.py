@@ -12,10 +12,12 @@ def test_delete_user(app):
             bmonth="'October'", byear="1991", aday="'25'", amonth="'November'", ayear="2015", address2="Rome", notes="No"
         )
         app.user.create(user)
-    # start test
+    # get current user list
     old_user_list = app.user.get_user_list()
     app.user.delete()
+    assert len(old_user_list) - 1 == app.user.count()
+    # get new user list
     new_user_list = app.user.get_user_list()
-    assert len(old_user_list) - 1 == len(new_user_list)
+    # del first user
     old_user_list.pop(0)
     assert sorted(old_user_list, key=User.id_or_max) == sorted(new_user_list, key=User.id_or_max)
