@@ -1,5 +1,5 @@
 from selenium.webdriver.common.by import By
-
+from model.user import User
 
 class UserHelper:
 
@@ -75,3 +75,15 @@ class UserHelper:
     def count(self):
         self.app.navigation.return_to_home_page()
         return len(self.app.driver.find_elements(By.NAME, "selected[]"))
+
+    def get_user_list(self):
+        self.app.navigation.return_to_home_page()
+        user_list = []
+        find_user_list = self.app.driver.find_element(By.ID, "maintable").find_elements(By.NAME, "entry")
+        for user in find_user_list:
+            user_params_list = user.find_elements(By.TAG_NAME, "td")
+            first_name = user_params_list[2].text
+            last_name = user_params_list[1].text
+            user_id = user_params_list[0].find_element(By.NAME, "selected[]").get_attribute("value")
+            user_list.append(User(firstname=first_name, lastname=last_name, id=user_id))
+        return user_list
