@@ -1,17 +1,19 @@
 # -*- coding: utf-8 -*-
 from model.group import Group
+from random import randrange
 
 
-def test_delete_first_group(app):
+def test_delete_some_group(app):
     # check what groups is not empty
     if app.group.count() == 0:
         group = Group(name="Lol", header="Happy", footer="Gays")
         app.group.create(group)
-    # start test
     old_groups = app.group.get_group_list()
-    app.group.delete_first_group()
+    # get index for delete random group
+    index = randrange(len(old_groups))
+    app.group.delete_group_by_index(index)
     assert len(old_groups) - 1 == app.group.count()
     new_groups = app.group.get_group_list()
     # delete first element
-    old_groups.pop(0)
+    old_groups.pop(index)
     assert old_groups == new_groups
