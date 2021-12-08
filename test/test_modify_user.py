@@ -16,7 +16,7 @@ def test_modify_user_name(app):
         app.user.create(user)
     modify_user = User(firstname="Piter", lastname="Ivanov")
     # get current user list
-    old_user_list = app.user.get_user_list()
+    old_user_list = app.user.get_contact_list()
     # get index for delete random user
     index = randrange(len(old_user_list))
     # remember user id
@@ -24,7 +24,7 @@ def test_modify_user_name(app):
     app.user.modify_by_index(index, modify_user)
     assert len(old_user_list) == app.user.count()
     # get new user list
-    new_user_list = app.user.get_user_list()
+    new_user_list = app.user.get_contact_list()
     # replace first user to modify user
     old_user_list[index] = modify_user
     assert sorted(old_user_list, key=User.id_or_max) == sorted(new_user_list, key=User.id_or_max)

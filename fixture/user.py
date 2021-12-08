@@ -1,5 +1,7 @@
 from selenium.webdriver.common.by import By
 from model.user import User
+import re
+
 
 class UserHelper:
 
@@ -99,7 +101,7 @@ class UserHelper:
 
     user_cache = None
 
-    def get_user_list(self):
+    def get_contact_list(self):
         self.app.navigation.go_to_home_page()
         if self.user_cache is None:
             self.user_cache = []
@@ -109,6 +111,31 @@ class UserHelper:
                 first_name = user_params_list[2].text
                 last_name = user_params_list[1].text
                 user_id = user_params_list[0].find_element(By.NAME, "selected[]").get_attribute("value")
-                self.user_cache.append(User(firstname=first_name, lastname=last_name, id=user_id))
+                # get all phones in list
+                all_phones_list = user_params_list[5].text.splitlines()
+                homephone, mobilephone, workphone, secondaryphone = all_phones_list
+                self.user_cache.append(User(firstname=first_name, lastname=last_name, id=user_id,
+                                            home=homephone, work=workphone, mobile=mobilephone, phone2=secondaryphone))
         # return copy user_cache
         return list(self.user_cache)
+
+    def get_contact_info_from_edit_page(self, index):
+        self.open_form_to_modify(index)
+        firstname = self.app.driver.find_element(By.NAME, "firstname").get_attribute("value")
+        lastname = self.app.driver.find_element(By.NAME, "lastname").get_attribute("value")
+        user_id = self.app.driver.find_element(By.NAME, "id").get_attribute("value")
+        homephone = self.app.driver.find_element(By.NAME, "home").get_attribute("value")
+        workphone = self.app.driver.find_element(By.NAME, "work").get_attribute("value")
+        mobilephone = self.app.driver.find_element(By.NAME, "mobile").get_attribute("value")
+        secondaryphone = self.app.driver.find_element(By.NAME, "phone2").get_attribute("value")
+        return User(firstname=firstname, lastname=lastname, id=user_id, home=homephone, work=workphone,
+                    mobile=mobilephone, phone2=secondaryphone)
+
+    def get_contact_from_view_page(self, index):
+        self.open_form_by_view(index)
+        text = self.app.driver.find_element(By.ID, "content").text
+        homephone = re.search("H: (.*)", text).group(1)
+        workphone = re.search("W: (.*)", text).group(1)
+        mobilephone = re.search("M: (.*)", text).group(1)
+        secondaryphone = re.search("P: (.*)", text).group(1)
+        return User(home=homephone, work=workphone, mobile=mobilephone, phone2=secondaryphone)
