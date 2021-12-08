@@ -58,22 +58,35 @@ class UserHelper:
         self.change_field_value("notes", user.notes)
 
     def delete(self):
-        # select first user
-        self.app.driver.find_element(By.NAME, "selected[]").click()
+        # delete first user
+        self.delete_by_index(0)
+
+    def delete_by_index(self, index):
+        self.select_user_by_index(index)
+        # delete user
         self.app.driver.find_element(By.XPATH, "//input[@value='Delete']").click()
         # confirm changes
         self.app.driver.switch_to.alert.accept()
         self.app.navigation.return_to_home_page()
         self.user_cache = None
 
+    def select_user_by_index(self, index):
+        self.app.driver.find_elements(By.NAME, "selected[]")[index].click()
+
     def modify(self, user):
-        # open modify form for first user
-        self.app.driver.find_element(By.XPATH, "//img[@alt='Edit']").click()
+        # modify first user
+        self.modify_by_index(0, user)
+
+    def modify_by_index(self, index, user):
+        self.select_modify_form_by_index(index)
         self.fill_user_form(user)
         # save changes
         self.app.driver.find_element(By.NAME, "update").click()
         self.app.navigation.return_to_home_page()
         self.user_cache = None
+
+    def select_modify_form_by_index(self, index):
+        self.app.driver.find_elements(By.XPATH, "//img[@alt='Edit']")[index].click()
 
     def count(self):
         self.app.navigation.return_to_home_page()
