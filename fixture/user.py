@@ -14,7 +14,7 @@ class UserHelper:
         self.fill_user_form(user)
         # save changes
         self.app.driver.find_element(By.XPATH, "(//input[@name=\'submit\'])[2]").click()
-        self.app.navigation.return_to_home_page()
+        self.app.navigation.go_to_home_page()
         self.user_cache = None
 
 
@@ -67,7 +67,7 @@ class UserHelper:
         self.app.driver.find_element(By.XPATH, "//input[@value='Delete']").click()
         # confirm changes
         self.app.driver.switch_to.alert.accept()
-        self.app.navigation.return_to_home_page()
+        self.app.navigation.go_to_home_page()
         self.user_cache = None
 
     def select_user_by_index(self, index):
@@ -78,24 +78,29 @@ class UserHelper:
         self.modify_by_index(0, user)
 
     def modify_by_index(self, index, user):
-        self.select_modify_form_by_index(index)
+        self.open_form_to_modify(index)
         self.fill_user_form(user)
         # save changes
         self.app.driver.find_element(By.NAME, "update").click()
-        self.app.navigation.return_to_home_page()
+        self.app.navigation.go_to_home_page()
         self.user_cache = None
 
-    def select_modify_form_by_index(self, index):
+    def open_form_to_modify(self, index):
+        self.app.navigation.go_to_home_page()
         self.app.driver.find_elements(By.XPATH, "//img[@alt='Edit']")[index].click()
 
+    def open_form_by_view(self, index):
+        self.app.navigation.go_to_home_page()
+        self.app.driver.find_elements(By.XPATH, "//img[@alt='Details']")[index].click()
+
     def count(self):
-        self.app.navigation.return_to_home_page()
+        self.app.navigation.go_to_home_page()
         return len(self.app.driver.find_elements(By.NAME, "selected[]"))
 
     user_cache = None
 
     def get_user_list(self):
-        self.app.navigation.return_to_home_page()
+        self.app.navigation.go_to_home_page()
         if self.user_cache is None:
             self.user_cache = []
             find_user_list = self.app.driver.find_element(By.ID, "maintable").find_elements(By.NAME, "entry")

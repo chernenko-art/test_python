@@ -31,6 +31,6 @@ class NavigationHelper:
         is_open = current_url and len(home_page_elements) > 0
         return is_open
 
-    def return_to_home_page(self):
+    def go_to_home_page(self):
         if not self.check_home_page():
             self.app.driver.find_element(By.LINK_TEXT, "home").click()
