@@ -19,7 +19,6 @@ class UserHelper:
         self.app.navigation.go_to_home_page()
         self.user_cache = None
 
-
     def change_field_value(self, field_name, text):
         if text is not None:
             # check text field
@@ -113,8 +112,12 @@ class UserHelper:
                 user_id = user_params_list[0].find_element(By.NAME, "selected[]").get_attribute("value")
                 # get all phones in str
                 all_phones = user_params_list[5].text
-                self.user_cache.append(User(firstname=first_name, lastname=last_name,
-                                            id=user_id, all_phones_from_page=all_phones))
+                # get all address in str
+                address = user_params_list[3].text
+                all_email = user_params_list[4].text
+                self.user_cache.append(User(firstname=first_name, lastname=last_name, id=user_id,
+                                            all_phones_from_page=all_phones, address=address,
+                                            all_email_from_page=all_email))
         # return copy user_cache
         return list(self.user_cache)
 
@@ -127,8 +130,13 @@ class UserHelper:
         workphone = self.app.driver.find_element(By.NAME, "work").get_attribute("value")
         mobilephone = self.app.driver.find_element(By.NAME, "mobile").get_attribute("value")
         secondaryphone = self.app.driver.find_element(By.NAME, "phone2").get_attribute("value")
+        address = self.app.driver.find_element(By.NAME, "address").get_attribute("value")
+        email_1 = self.app.driver.find_element(By.NAME, "email").get_attribute("value")
+        email_2 = self.app.driver.find_element(By.NAME, "email2").get_attribute("value")
+        email_3 = self.app.driver.find_element(By.NAME, "email3").get_attribute("value")
         return User(firstname=firstname, lastname=lastname, id=user_id, home=homephone, work=workphone,
-                    mobile=mobilephone, phone2=secondaryphone)
+                    mobile=mobilephone, phone2=secondaryphone, address=address, email=email_1, email2=email_2,
+                    email3=email_3)
 
     def get_contact_from_view_page(self, index):
         self.open_form_by_view(index)
