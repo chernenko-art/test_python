@@ -7,7 +7,7 @@ class User:
             firstname=None, middlename=None, lastname=None, nickname=None, title=None, company=None, address=None,
             home=None, mobile=None, work=None, fax=None, email=None, email2=None, email3=None, homepage=None,
             phone2=None, bday=None, bmonth=None, byear=None, aday=None, amonth=None, ayear=None, address2=None,
-            notes=None, id=None):
+            notes=None, id=None, all_phones_from_page=None):
         self.firstname = firstname
         self.middlename = middlename
         self.lastname = lastname
@@ -33,6 +33,7 @@ class User:
         self.address2 = address2
         self.notes = notes
         self.id = id
+        self.all_phones_from_page = all_phones_from_page
 
     def __repr__(self):
         return f"{self.id}:{self.firstname}:{self.lastname}"

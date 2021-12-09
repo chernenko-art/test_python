@@ -111,11 +111,10 @@ class UserHelper:
                 first_name = user_params_list[2].text
                 last_name = user_params_list[1].text
                 user_id = user_params_list[0].find_element(By.NAME, "selected[]").get_attribute("value")
-                # get all phones in list
-                all_phones_list = user_params_list[5].text.splitlines()
-                homephone, mobilephone, workphone, secondaryphone = all_phones_list
-                self.user_cache.append(User(firstname=first_name, lastname=last_name, id=user_id,
-                                            home=homephone, work=workphone, mobile=mobilephone, phone2=secondaryphone))
+                # get all phones in str
+                all_phones = user_params_list[5].text
+                self.user_cache.append(User(firstname=first_name, lastname=last_name,
+                                            id=user_id, all_phones_from_page=all_phones))
         # return copy user_cache
         return list(self.user_cache)
 
@@ -133,9 +132,12 @@ class UserHelper:
 
     def get_contact_from_view_page(self, index):
         self.open_form_by_view(index)
+        # get all text on page
         text = self.app.driver.find_element(By.ID, "content").text
-        homephone = re.search("H: (.*)", text).group(1)
-        workphone = re.search("W: (.*)", text).group(1)
-        mobilephone = re.search("M: (.*)", text).group(1)
-        secondaryphone = re.search("P: (.*)", text).group(1)
-        return User(home=homephone, work=workphone, mobile=mobilephone, phone2=secondaryphone)
+        # get all phones on page with Fax number
+        phones_with_fax = "".join(text.split('\n\n')[1])
+        # delete Fax number
+        phones_without_fax = re.sub("F.*", "", phones_with_fax)
+        secondaryphone = text.split('\n\n')[5]
+        all_phones = phones_without_fax + secondaryphone
+        return User(all_phones_from_page=all_phones)
