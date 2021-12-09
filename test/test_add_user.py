@@ -1,14 +1,29 @@
 # -*- coding: utf-8 -*-
+import pytest
 from model.user import User
+import random
+import string
 
 
-def test_create_user(app):
-    user = User(
-        firstname="Eva", middlename="Semenova", lastname="Cocs", nickname="Coca", title="Nocomments", company="Google",
-        address="Russia", home="+798774", mobile="+7 166 94 21", work="8-(913)-794-61 58", fax="14481561", email="eva@mail.ru",
-        email2="no", email3="no", homepage="no", phone2="+89945669", bday=12, bmonth="'October'", byear="1991",
-        aday="'25'", amonth="'November'", ayear="2015", address2="Rome", notes="No"
-    )
+def random_string(prefix, maxlen):
+    # generate string on letters, numbers symbols and spaces
+    symbol = string.ascii_letters + string.digits + " "*10
+    # generate string on random symbols and length
+    return prefix + "".join([random.choice(symbol) for i in range(random.randrange(maxlen))])
+
+test_data = [
+                User(firstname="", middlename="", lastname="", address="", home="", mobile="", work="", email="",
+                  email2="", email3="", phone2="")
+            ] + [
+    User(firstname=random_string("firstname", 10), middlename=random_string("lastname", 10),
+         lastname=random_string("lastname", 10), address=random_string("address", 10), home=random_string("home", 10),
+         mobile=random_string("mobile", 10), work=random_string("work", 10), email=random_string("email", 10),
+         email2=random_string("email2", 10), email3=random_string("email3", 10), phone2=random_string("phone2", 10))
+]
+
+
+@pytest.mark.parametrize("user", test_data, ids=[repr(x) for x in test_data])
+def test_create_user(app, user):
     # get current user list
     old_user_list = app.user.get_contact_list()
     app.user.create(user)
