@@ -8,7 +8,7 @@ class NavigationHelper:
 
     def open_home_page(self):
         if not self.check_home_page():
-            self.app.driver.get("http://localhost/addressbook/")
+            self.app.driver.get(self.app.base_url)
             self.app.driver.set_window_size(1012, 691)
 
     def close_home_page(self):
