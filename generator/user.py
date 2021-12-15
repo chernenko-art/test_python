@@ -8,7 +8,7 @@ import sys
 
 
 # default params
-n = 5  # quantity iterations
+n = 1  # quantity iterations
 f = "data/users.json"
 
 # path to file

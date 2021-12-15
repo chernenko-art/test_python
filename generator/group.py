@@ -9,7 +9,7 @@ import sys
 
 
 # default params
-n = 5  # quantity iterations
+n = 1  # quantity iterations
 f = "data/groups.json"
 
 # get option from cmd

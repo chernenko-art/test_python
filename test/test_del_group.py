@@ -3,10 +3,10 @@ from model.group import Group
 from random import randrange
 
 
-def test_delete_some_group(app):
+def test_delete_some_group(app, json_groups):
+    group = json_groups
     # check what groups is not empty
     if app.group.count() == 0:
-        group = Group(name="Lol", header="Happy", footer="Gays")
         app.group.create(group)
     old_groups = app.group.get_group_list()
     # get index for delete random group
