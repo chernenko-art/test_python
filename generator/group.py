@@ -45,7 +45,7 @@ testdata = [Group(name="", header="", footer="")] + [
 ]
 
 
-# write generate data (User object) to json file
+# write generate data (Group object) to json file
 with open(file, "w") as out:
     jsonpickle.set_encoder_options("json", indent=2)  # format params
     out.write(jsonpickle.encode(testdata))
