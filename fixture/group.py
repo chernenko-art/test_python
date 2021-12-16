@@ -38,6 +38,13 @@ class GroupHelper:
         self.app.navigation.open_home_page()
         self.group_cache = None
 
+    def delete_group_by_id(self, id):
+        self.app.navigation.open_groups_page()
+        self.select_group_by_id(id)
+        self.app.driver.find_element(By.NAME, "delete").click()
+        self.app.navigation.open_home_page()
+        self.group_cache = None
+
     def modify_first_group(self, new_group_data):
         self.modify_group_by_index(0, new_group_data)
 
@@ -58,6 +65,9 @@ class GroupHelper:
 
     def select_group_by_index(self, index):
         self.app.driver.find_elements(By.NAME, "selected[]")[index].click()
+
+    def select_group_by_id(self, id):
+        self.app.driver.find_element(By.CSS_SELECTOR, f"input[value='{id}']").click()
 
     def count(self):
         self.app.navigation.open_groups_page()

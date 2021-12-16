@@ -1,19 +1,23 @@
 # -*- coding: utf-8 -*-
+import random
 from model.group import Group
 from random import randrange
 
 
-def test_delete_some_group(app, json_groups):
+def test_delete_some_group(app, db, json_groups, check_ui):
     group = json_groups
     # check what groups is not empty
-    if app.group.count() == 0:
+    if len(db.get_group_list()) == 0:
         app.group.create(group)
-    old_groups = app.group.get_group_list()
-    # get index for delete random group
-    index = randrange(len(old_groups))
-    app.group.delete_group_by_index(index)
+    old_groups = db.get_group_list()
+    # choice random group for delete
+    group = random.choice(old_groups)
+    app.group.delete_group_by_id(group.id)
     assert len(old_groups) - 1 == app.group.count()
-    new_groups = app.group.get_group_list()
-    # delete first element
-    old_groups.pop(index)
+    new_groups = db.get_group_list()
+    # delete group (by id)
+    old_groups.remove(group)
     assert old_groups == new_groups
+    # optional check ui
+    if check_ui:
+        assert sorted(new_groups, key=Group.id_or_max) == sorted(app.group.get_group_list(), key=Group.id_or_max)
