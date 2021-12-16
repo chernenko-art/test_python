@@ -59,6 +59,16 @@ class GroupHelper:
         self.app.navigation.open_home_page()
         self.group_cache = None
 
+    def modify_group_by_id(self, id, new_group_data):
+        self.app.navigation.open_groups_page()
+        self.select_group_by_id(id)
+        # open modification form
+        self.app.driver.find_element(By.NAME, "edit").click()
+        self.fill_group_form(new_group_data)
+        # submit modification
+        self.app.driver.find_element(By.NAME, "update").click()
+        self.app.navigation.open_home_page()
+        self.group_cache = None
 
     def select_first_group(self):
         self.app.driver.find_element(By.NAME, "selected[]").click()
