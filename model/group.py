@@ -9,9 +9,11 @@ class Group:
         self.footer = footer
         self.id = id
 
+    # presentation Group object in console
     def __repr__(self):
         return f"{self.id}:{self.name}:{self.header}:{self.footer}"
 
+    # method for equals Group object
     def __eq__(self, other):
         return (self.id is None or other.id is None or self.id == other.id) and self.name == other.name
 

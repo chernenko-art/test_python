@@ -36,9 +36,11 @@ class User:
         self.all_phones_from_page = all_phones_from_page
         self.all_email_from_page = all_email_from_page
 
+    # presentation User object in console
     def __repr__(self):
         return f"{self.id}:{self.firstname}:{self.lastname}:{self.home}:{self.email}"
 
+    # method for equals User object
     def __eq__(self, other):
         return (self.id is None or other.id is None or self.id == other.id) \
                 and self.firstname == other.firstname and self.lastname == other.lastname

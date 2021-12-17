@@ -1,24 +1,25 @@
 # -*- coding: utf-8 -*-
+import random
 from model.user import User
-from random import randrange
 
 
-def test_modify_user_name(app, json_users):
+def test_modify_user_name(app, db, json_users, check_ui):
     # check what groups is not empty
-    if app.user.count() == 0:
+    if len(db.get_user_list()) == 0:
         user = json_users
         app.user.create(user)
-    modify_user = User(firstname="Piter", lastname="Ivanov")
-    # get current user list
-    old_user_list = app.user.get_contact_list()
-    # get index for modify random user
-    index = randrange(len(old_user_list))
-    # remember user id
-    modify_user.id = old_user_list[index].id
-    app.user.modify_by_index(index, modify_user)
-    assert len(old_user_list) == app.user.count()
+    user = User(firstname="Piter", lastname="Ivanov", middlename="Sergeevich")
+    # get current user list from db
+    old_user_list = db.get_user_list()
+    # get id for modify random user
+    user_random = random.choice(old_user_list)
+    user.id = user_random.id
+    app.user.modify_by_id(user.id, user)
     # get new user list
-    new_user_list = app.user.get_contact_list()
+    new_user_list = db.get_user_list()
     # replace first user to modify user
-    old_user_list[index] = modify_user
+    old_user_list.remove(user_random)
+    old_user_list.append(user)
     assert sorted(old_user_list, key=User.id_or_max) == sorted(new_user_list, key=User.id_or_max)
+    if check_ui:
+        assert sorted(new_user_list, key=User.id_or_max) == sorted(app.user.get_contact_list(), key=User.id_or_max)

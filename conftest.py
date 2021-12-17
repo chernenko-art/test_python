@@ -27,8 +27,9 @@ def load_config(file):
 @pytest.fixture
 def app(request):
     global fixture
+    # get name browser(str) from cmd option (marker --browser)
     browser = request.config.getoption("--browser")
-    # validation target file for web configuration
+    # get data from json file (path to file getting from cmd option, marker --target)
     web_config = load_config(request.config.getoption("--target"))["web"]
     # validation fixture
     if fixture is None or not fixture.is_valid():
@@ -40,9 +41,10 @@ def app(request):
 # fixture for data base
 @pytest.fixture(scope="session")
 def db(request):
-    # validation target file for db configuration
+    # get data from json file (path to file getting from cmd option, marker --target)
     db_config = load_config(request.config.getoption("--target"))["db"]
-    dbfixture = DbFixture(host=db_config["host"], name=db_config["name"], user=db_config["user"], password=db_config["password"])
+    dbfixture = DbFixture(host=db_config["host"], name=db_config["name"], user=db_config["user"],
+                          password=db_config["password"])
     # finalizing db
     def fin():
         dbfixture.destroy()
@@ -65,19 +67,21 @@ def check_ui(request):
     return request.config.getoption("--check_ui")
 
 
-# hook for get params from cmd
+# pytest hook - get params from cmd markers
 def pytest_addoption(parser):
-    # description options
-    parser.addoption("--browser", action="store", default="chrome")
-    parser.addoption("--target", action="store", default="target.json")
-    parser.addoption("--check_ui", action="store_true")  # store_true - return True if option init, another - False
+    # option for choice web browser
+    parser.addoption("--browser", action="store", default="chrome")  # get value
+    # option for get configuration from json file
+    parser.addoption("--target", action="store", default="target.json")  # get path to json file
+    # option for start ui tests
+    parser.addoption("--check_ui", action="store_true")  # store_true: if option init - return True , another - False
 
 
 # function for parametrise all test functions
-def pytest_generate_tests(metafunc):  # metafunc - get info about test functions
-    for fixture in metafunc.fixturenames:  # get info about test functions fixture
+def pytest_generate_tests(metafunc):  # metafunc - info about all fixtures
+    for fixture in metafunc.fixturenames:  # find your fixture
         if fixture.startswith("data_"):
-            testdata = load_from_module(fixture[5:])  # load data from file(name)
+            testdata = load_from_module(fixture[5:])  # load data from file(where name beginning after 5 symbols)
             metafunc.parametrize(fixture, testdata, ids=[str(x) for x in testdata])  # where, from, presentation
         elif fixture.startswith("json_"):
             testdata = load_from_json(fixture[5:])
@@ -86,11 +90,9 @@ def pytest_generate_tests(metafunc):  # metafunc - get info about test functions
 
 # import testdata from module
 def load_from_module(module):
-    return importlib.import_module(f"data.{module}").testdata
+    return importlib.import_module(f"data.{module}").testdata  # path to module data
 
 
 def load_from_json(file):
     with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), f"data/{file}.json")) as f:  # path to json file
         return jsonpickle.decode(f.read())
-
-

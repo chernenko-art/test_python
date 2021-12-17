@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import random
 from model.group import Group
-from random import randrange
 
 
 def test_delete_some_group(app, db, json_groups, check_ui):
@@ -17,7 +16,7 @@ def test_delete_some_group(app, db, json_groups, check_ui):
     new_groups = db.get_group_list()
     # delete group (by id)
     old_groups.remove(group)
-    assert old_groups == new_groups
+    assert sorted(old_groups, key=Group.id_or_max) == sorted(new_groups, key=Group.id_or_max)
     # optional check ui
     if check_ui:
         assert sorted(new_groups, key=Group.id_or_max) == sorted(app.group.get_group_list(), key=Group.id_or_max)

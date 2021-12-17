@@ -71,8 +71,20 @@ class UserHelper:
         self.app.navigation.go_to_home_page()
         self.user_cache = None
 
+    def delete_by_id(self, id):
+        self.select_user_by_id(id)
+        # delete user
+        self.app.driver.find_element(By.XPATH, "//input[@value='Delete']").click()
+        # confirm changes
+        self.app.driver.switch_to.alert.accept()
+        self.app.navigation.go_to_home_page()
+        self.user_cache = None
+
     def select_user_by_index(self, index):
         self.app.driver.find_elements(By.NAME, "selected[]")[index].click()
+
+    def select_user_by_id(self, id):
+        self.app.driver.find_element(By.CSS_SELECTOR, f"input[value='{id}']").click()
 
     def modify(self, user):
         # modify first user
@@ -86,9 +98,22 @@ class UserHelper:
         self.app.navigation.go_to_home_page()
         self.user_cache = None
 
+    def modify_by_id(self, id, user):
+        self.open_form_to_modify_by_id(id)
+        self.fill_user_form(user)
+        # save changes
+        self.app.driver.find_element(By.NAME, "update").click()
+        self.app.navigation.go_to_home_page()
+        self.user_cache = None
+
     def open_form_to_modify(self, index):
         self.app.navigation.go_to_home_page()
         self.app.driver.find_elements(By.XPATH, "//img[@alt='Edit']")[index].click()
+
+    def open_form_to_modify_by_id(self, id):
+        self.app.navigation.go_to_home_page()
+        self.app.driver.find_element(By.CSS_SELECTOR, f"a[href='edit.php?id={id}']").click()
+
 
     def open_form_by_view(self, index):
         self.app.navigation.go_to_home_page()
