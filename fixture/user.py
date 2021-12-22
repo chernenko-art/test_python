@@ -174,3 +174,32 @@ class UserHelper:
         secondaryphone = text.split('\n\n')[5]
         all_phones = phones_without_fax + secondaryphone
         return User(all_phones_from_page=all_phones)
+
+    def add_user_in_group(self, user, group):
+        self.app.navigation.go_to_home_page()
+        self.select_user_by_id(user.id)
+        # select group to add contact
+        dropdown = self.app.driver.find_element(By.NAME, "to_group")
+        dropdown.find_element(By.CSS_SELECTOR, f"option[value='{group.id}']").click()
+        # add contact
+        self.app.driver.find_element(By.NAME, "add").click()
+        self.show_all_groups()
+
+    def show_contacts_in_group(self, group):
+        dropdown = self.app.driver.find_element(By.NAME, "group")
+        dropdown.find_element(By.CSS_SELECTOR, f"option[value='{group.id}']").click()
+
+    def del_user_from_group(self, user, group):
+        self.app.navigation.go_to_home_page()
+        self.show_contacts_in_group(group)
+        self.select_user_by_id(user.id)
+        self.app.driver.find_element(By.NAME, "remove").click()
+        self.show_all_groups()
+
+    def show_all_groups(self):
+        self.app.navigation.go_to_home_page()
+        dropdown = self.app.driver.find_element(By.NAME, "group")
+        dropdown.find_element(By.XPATH, "//option[. = '[all]']").click()
+
+
+

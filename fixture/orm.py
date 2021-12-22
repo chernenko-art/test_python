@@ -31,6 +31,9 @@ class ORMFixture:
         groups = Set(lambda: ORMFixture.ORMGroup, table="address_in_groups", column="group_id", reverse="contacts",
                      lazy=True)
 
+    def destroy(self):
+        self.db.disconnect()
+
     # link to db
     def __init__(self, host, name, user, password):
         self.db.bind("mysql", host=host, database=name, user=user, password=password)  # link
