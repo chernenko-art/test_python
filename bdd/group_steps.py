@@ -51,3 +51,23 @@ def verify_group_deleted(db, random_group, non_empty_group_list, app, check_ui):
     assert sorted(old_groups, key=Group.id_or_max) == sorted(new_groups, key=Group.id_or_max)
     if check_ui:
         assert sorted(new_groups, key=Group.id_or_max) == sorted(app.group.get_group_list(), key=Group.id_or_max)
+
+
+@when("I modify the group from the list", target_fixture="modify_group")
+def modify_group(app, random_group):
+    group = Group(name="New name")
+    app.group.modify_group_by_id(random_group.id, group)
+    return group
+
+
+@then("the new group list is equal to the old list with modified group")
+def verify_group_modified(app, db, random_group, non_empty_group_list, modify_group, check_ui):
+    old_groups = non_empty_group_list
+    new_groups = db.get_group_list()
+    group = modify_group
+    group.id = random_group.id
+    old_groups.remove(random_group)
+    old_groups.append(group)
+    assert sorted(old_groups, key=Group.id_or_max) == sorted(new_groups, key=Group.id_or_max)
+    if check_ui:
+        assert sorted(new_groups, key=Group.id_or_max) == sorted(app.group.get_group_list(), key=Group.id_or_max)
