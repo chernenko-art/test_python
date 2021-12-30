@@ -71,9 +71,12 @@ def ormdb(request):
 #  finalizing web fixture
 @pytest.fixture(scope="session", autouse=True)  # autouse - automatic start fixture
 def stop(request):
+    global fixture
+
     def fin():
-        fixture.session.logout()
-        fixture.destroy()
+        if not fixture is None:
+            fixture.session.logout()
+            fixture.destroy()
 
     request.addfinalizer(fin)
     return fixture
