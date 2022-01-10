@@ -5,3 +5,4 @@ pymysql
 jsonpickle
 mysql-connector-python
 pytest-bdd==4.1.0
+allure-pytest
