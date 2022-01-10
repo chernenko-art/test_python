@@ -27,5 +27,21 @@ class AddressBook:
         self.dbfixture.destroy()
         self.fixture.destroy()
 
-    def create_group(self, name, header, footer):
-        self.fixture.group.create(Group(name=name, header=header, footer=footer))
+    def new_group(self, name, header, footer):
+        return Group(name=name, header=header, footer=footer)
+
+    def get_group_list(self):
+        return self.dbfixture.get_group_list()
+
+    def create_group(self, group):
+        self.fixture.group.create(group)
+
+    def delete_group(self, group):
+        self.fixture.group.delete_group_by_id(group.id)
+
+    def modify_group(self, group):
+        group_data = Group(name="modify_name")
+        self.fixture.group.modify_group_by_id(group.id, group_data)
+
+    def group_list_should_be_equal(self, old_groups, new_groups):
+        assert sorted(old_groups, key=Group.id_or_max) == sorted(new_groups, key=Group.id_or_max)
