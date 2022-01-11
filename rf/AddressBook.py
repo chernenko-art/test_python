@@ -3,6 +3,7 @@ import json
 import os.path
 from fixture.db import DbFixture
 from model.group import Group
+from model.user import User
 
 
 class AddressBook:
@@ -45,3 +46,22 @@ class AddressBook:
 
     def group_list_should_be_equal(self, old_groups, new_groups):
         assert sorted(old_groups, key=Group.id_or_max) == sorted(new_groups, key=Group.id_or_max)
+
+    def new_user(self, firstname,  middlename,  lastname):
+        return User(firstname=firstname,  middlename=middlename,  lastname=lastname)
+
+    def get_user_list(self):
+        return self.dbfixture.get_user_list()
+
+    def create_user(self, user):
+        self.fixture.user.create(user)
+
+    def delete_user(self, user):
+        self.fixture.user.delete_by_id(user.id)
+
+    def modify_user(self, user):
+        user_data = User(firstname="modify_firstname")
+        self.fixture.user.modify_by_id(user.id, user_data)
+
+    def user_list_should_be_equal(self, old_user_list, new_user_list):
+        assert sorted(old_user_list, key=User.id_or_max) == sorted(new_user_list, key=User.id_or_max)
